@@ -43,14 +43,12 @@ Single-root (both in root):
 - /src (contains server and client)
 - /README.md
 
-If your repository uses different folder names, substitute them below when running commands.
-
 Prerequisites
 -------------
 - Node.js >= 18 (or LTS)
 - npm, yarn, or pnpm
 - PostgreSQL (local or remote)
-- (Optional) Docker & Docker Compose
+- Docker & Docker Compose
 
 Quick start — local development
 -------------------------------
