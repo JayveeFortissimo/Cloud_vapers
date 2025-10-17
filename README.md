@@ -13,12 +13,7 @@ Table of contents
   - Database
 - Environment variables (.env examples)
 - Docker (not yet setup this one)
-- Development tips
-- Typography & professional fonts 🎨
-- Linting & formatting
-- Testing
-- Contributing
-- License & contact
+
 
 About
 -----
