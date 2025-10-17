@@ -1,8 +1,6 @@
 # ☁️ Cloud Vapers XD
 
-Cloud Vapers is a light, fun side project built "pampaantok lang tuwing gabi" — made for experimenting with modern web stacks and messing around with UI/UX. It's written with a React + Vite frontend and a TypeScript + Express backend.  
-
-A little joke in Tagalog: "Hello this project is eme eme lang hahahahha bakit ba XD if basher ka hindi ka para d2 kaya alis de joke" — it's just for fun. If you're visiting the repo, welcome! I hope you have fun exploring. 😄
+Cloud Vapers is a light, fun side project built "pampaantok lang tuwing gabi" 
 
 Table of contents
 - About
