@@ -45,7 +45,7 @@ const LoginForm = () => {
               render={({ field }) => (
                 <FormItem>
                   <FormLabel className="text-base lg:text-xl text-white">
-                    Username
+                    Email
                   </FormLabel>
                   <FormControl>
                     <Input
@@ -91,6 +91,7 @@ const LoginForm = () => {
                       <Checkbox
                         checked={field.value}
                         onCheckedChange={field.onChange}
+                        className="cursor-pointer"
                       />
                       <FormLabel className="text-base text-white">
                         Remember me

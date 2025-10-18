@@ -3,8 +3,9 @@ import dotenv from "dotenv";
 
 dotenv.config();
 
-
 const ACCESS_TOKEN_SECRET = process.env.ACCESS_TOKEN_SECRET as string
+const REFRESH_TOKEN_SECRET = process.env.REFRESH_TOKEN_SECRET as string
+
 
 export const accessToken = (payload: object) => {
 	return jwt.sign(payload, ACCESS_TOKEN_SECRET , {
@@ -12,6 +13,8 @@ export const accessToken = (payload: object) => {
 	});
 };
 
-export const verifyToken = (token: string) => {
-	
+export const refreshToken = (payload: object) => {
+	return jwt.sign(payload, REFRESH_TOKEN_SECRET , {
+		expiresIn: "7d",
+	});
 };
