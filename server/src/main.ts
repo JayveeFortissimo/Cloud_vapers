@@ -2,7 +2,7 @@ import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 import helmet from "helmet";
-import routes from "./routes/route";
+import routes from "./feature/routes/route";
 import cookieParser from "cookie-parser"
 
 dotenv.config();

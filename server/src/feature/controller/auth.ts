@@ -1,17 +1,21 @@
 import { Response, Request, RequestHandler } from "express";
 import bcrypt from "bcrypt";
-import { pool } from "../config/database";
-import { accessToken, refreshToken } from "../utils/tokens";
+import { pool } from "../../config/database";
+import { accessToken, refreshToken } from "../../utils/tokens";
+import { RegisterInputTypes, LoginInputTypes } from "../types/user.types";
 
-const register: RequestHandler = async (req: Request, res: Response) => {
-  const { username, password, email } = req.body;
+const register: RequestHandler = async (
+  req: Request<{}, {}, RegisterInputTypes>,
+  res: Response
+): Promise<void> => {
+  const registerInputOnj: RegisterInputTypes = req.body;
 
   try {
-    const hashedPassword = await bcrypt.hash(password, 10);
+    const hashedPassword = await bcrypt.hash(registerInputOnj.password, 10);
 
     const isExistingUser = await pool.query(
       "SELECT * FROM usercredentials WHERE email = $1",
-      [email.trim()]
+      [registerInputOnj.email.trim()]
     );
 
     if (isExistingUser.rows.length > 0) {
@@ -21,7 +25,7 @@ const register: RequestHandler = async (req: Request, res: Response) => {
 
     await pool.query(
       "INSERT INTO usercredentials (username, password, email) VALUES ($1, $2, $3)",
-      [username, hashedPassword, email.trim()]
+      [registerInputOnj.username, hashedPassword, registerInputOnj.email.trim()]
     );
 
     res.status(200).json({ message: "User registered successfully!" });
@@ -31,16 +35,22 @@ const register: RequestHandler = async (req: Request, res: Response) => {
   }
 };
 
-const login: RequestHandler = async (req: Request, res: Response) => {
-  const { email, password } = req.body;
+const login: RequestHandler = async (
+  req: Request<{}, {}, LoginInputTypes>,
+  res: Response
+): Promise<void> => {
+  const loginObject: LoginInputTypes = req.body;
 
   try {
     const user = await pool.query(
       "SELECT * FROM usercredentials WHERE email = $1",
-      [email.trim()]
+      [loginObject.email.trim()]
     );
 
-    const yourPassword = await bcrypt.compare(password, user.rows[0].password);
+    const yourPassword = await bcrypt.compare(
+      loginObject.password,
+      user.rows[0].password
+    );
 
     if (!yourPassword) {
       res.status(400).json({ message: "Wrong Password" });
@@ -66,22 +76,24 @@ const login: RequestHandler = async (req: Request, res: Response) => {
   }
 };
 
-const logout: RequestHandler = async (req: Request, res: Response) => {
-    const userIsLogin = (req as any).user;
+const logout: RequestHandler = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  const userIsLogin = (req as any).user;
 
-    if(!userIsLogin){
-	res.status(404).json("User not found");
-	return
-    }
+  if (!userIsLogin) {
+    res.status(404).json("User not found");
+    return;
+  }
 
-    res.clearCookie("refreshToken", {
+  res.clearCookie("refreshToken", {
     httpOnly: true,
     // sameSite: "strict",
     // path: "/refresh_token"
   });
 
   res.json("Logout successfully!");
-
 };
 
 export { register, login, logout };
