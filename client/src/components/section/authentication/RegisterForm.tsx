@@ -42,9 +42,10 @@ const RegisterForm = () => {
 
       reset();
       redirect("/login");
-    } catch (error: any) {
+    } catch (error: object | any) {
       toast.error(error?.data.message);
     } finally {
+      console.log("Done")
     }
   }
 
