@@ -1,99 +1,62 @@
-import { Response, Request, RequestHandler } from "express";
-import bcrypt from "bcrypt";
-import { pool } from "../../config/database";
-import { accessToken, refreshToken } from "../../utils/tokens";
+import { Response, Request, NextFunction } from "express";
+
+import { UserAuthenticationService } from "../services/user.service";
 import { RegisterInputTypes, LoginInputTypes } from "../types/user.types";
 
-const register: RequestHandler = async (
-  req: Request<{}, {}, RegisterInputTypes>,
-  res: Response
-): Promise<void> => {
-  const registerInputOnj: RegisterInputTypes = req.body;
+export class UserController {
+  private readonly userService: UserAuthenticationService;
 
-  try {
-    const hashedPassword = await bcrypt.hash(registerInputOnj.password, 10);
-
-    const isExistingUser = await pool.query(
-      "SELECT * FROM usercredentials WHERE email = $1",
-      [registerInputOnj.email.trim()]
-    );
-
-    if (isExistingUser.rows.length > 0) {
-      res.status(400).json({ message: "User already exists" });
-      return;
-    }
-
-    await pool.query(
-      "INSERT INTO usercredentials (username, password, email) VALUES ($1, $2, $3)",
-      [registerInputOnj.username, hashedPassword, registerInputOnj.email.trim()]
-    );
-
-    res.status(200).json({ message: "User registered successfully!" });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: "Internal Server Error" });
+  constructor(userService: UserAuthenticationService) {
+    this.userService = userService;
   }
-};
 
-const login: RequestHandler = async (
-  req: Request<{}, {}, LoginInputTypes>,
-  res: Response
-): Promise<void> => {
-  const loginObject: LoginInputTypes = req.body;
+  register = async (
+    req: Request<{}, {}, RegisterInputTypes>,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> => {
+    try {
+      const registerInputObj: RegisterInputTypes = req.body;
+      const result = await this.userService.register(registerInputObj);
 
-  try {
-    const user = await pool.query(
-      "SELECT * FROM usercredentials WHERE email = $1",
-      [loginObject.email.trim()]
-    );
-
-    const yourPassword = await bcrypt.compare(
-      loginObject.password,
-      user.rows[0].password
-    );
-
-    if (!yourPassword) {
-      res.status(400).json({ message: "Wrong Password" });
-      return;
+      res.status(201).json(result);
+    } catch (error) {
+      console.log("resulta", this.userService);
+      next(error);
     }
+  };
 
-    const { user_id, username, age } = user.rows[0];
+  login = async (
+    req: Request<{}, {}, LoginInputTypes>,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> => {
+    try {
+      const loginInputObj: LoginInputTypes = req.body;
+      const result = await this.userService.login(loginInputObj);
 
-    const accesstoken = accessToken({ user_id, username, age });
-    const refreshtoken = refreshToken({ user_id, username, age });
+      if (!result.success) {
+        res.status(400).json(result);
+        return;
+      }
 
-    //Refresh token stpre in cookies cuz of its valid in 7days unlike of accesstoken is for almost 1 hour i think
-    res.cookie("refreshToken", refreshtoken, {
-      httpOnly: true,
-      // path: "/refresh_token",
-      // sameSite: "strict",
-      maxAge: 7 * 24 * 60 * 60 * 1000,
-    });
+      const refreshToken = result.data as { refresh_token: string };
 
-    res.json(accesstoken);
-  } catch (error) {
-    res.status(500).json({ message: "No Email found" });
-  }
-};
+      res.cookie("refreshToken", refreshToken.refresh_token, {
+        httpOnly: true,
+        // path: "/refresh_token",
+        // sameSite: "strict",
+        maxAge: 7 * 24 * 60 * 60 * 1000,
+      });
 
-const logout: RequestHandler = async (
-  req: Request,
-  res: Response
-): Promise<void> => {
-  const userIsLogin = (req as any).user;
+      res.status(200).json(result);
+    } catch (error) {
+      next(error);
+    }
+  };
 
-  if (!userIsLogin) {
-    res.status(404).json("User not found");
+  async logout(req: Request, res: Response, next: NextFunction): Promise<void> {
+    res.json({ message: "Logout successful" });
     return;
   }
-
-  res.clearCookie("refreshToken", {
-    httpOnly: true,
-    // sameSite: "strict",
-    // path: "/refresh_token"
-  });
-
-  res.json("Logout successfully!");
-};
-
-export { register, login, logout };
+}

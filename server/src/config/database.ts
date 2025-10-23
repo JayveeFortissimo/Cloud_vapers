@@ -3,7 +3,7 @@ import dotenv from "dotenv";
 
 dotenv.config();
 
-const pool = new Pool({
+const databaseConnection = new Pool({
 	user: process.env.USER as string,
 	host: process.env.HOST as string,
 	database: process.env.DATABASE as string,
@@ -13,7 +13,7 @@ const pool = new Pool({
 
 const connectDb = async () => {
 	try {
-		const client = await pool.connect();
+		const client = await databaseConnection.connect();
 		console.log("✅ Initial database connection successful");
 		client.release();
 	} catch (err) {
@@ -23,4 +23,4 @@ const connectDb = async () => {
 };
 connectDb();
 
-export { pool };
+export { databaseConnection };
