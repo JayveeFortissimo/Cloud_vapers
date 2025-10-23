@@ -17,7 +17,7 @@ Table of contents
 
 About
 -----
-Cloud Vapers is a sandbox project for experimenting with:
+
 - React (Vite) + Tailwind + shadcn/ui for the UI
 - Express.js with TypeScript for the API
 - PostgreSQL as the relational datastore
