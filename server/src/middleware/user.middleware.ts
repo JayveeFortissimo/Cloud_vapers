@@ -6,7 +6,7 @@ dotenv.config();
 
 const REFRESH_SECRET = process.env.REFRESH_TOKEN_SECRET as string;
 
-export const verifyAuthenticationToken: RequestHandler = (
+export const verifyUserAuthenticationToken: RequestHandler = (
   req: Request,
   res: Response,
   next: NextFunction

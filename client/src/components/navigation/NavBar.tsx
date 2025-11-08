@@ -5,6 +5,7 @@ import { ShineBorder } from "../ui/ShineBorder";
 import { Search, CircleUserRound } from "lucide-react";
 import CartSheet from "./CartSheet";
 import { useNavigate } from "react-router-dom";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 const Navbar = () => {
   const navigate = useNavigate();
@@ -20,12 +21,21 @@ const Navbar = () => {
         <div className="flex items-center gap-3">
           <CircleUserRound
             className="hidden md:block cursor-pointer"
+            size={35}
             onClick={() => navigate("/login")}
           />
+     
+     
+        {/* //If user Login then true this */}
+          {/* <Avatar>
+            <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
+            <AvatarFallback>CN</AvatarFallback>
+          </Avatar> */}
 
           <Search
             className="cursor-pointer"
             onClick={() => navigate("/searchpage")}
+            size={35}
           />
           <CartSheet />
           <div className="md:hidden">

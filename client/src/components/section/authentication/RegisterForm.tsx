@@ -15,12 +15,13 @@ import {
 import { Input } from "@/components/ui/Input";
 import { NavLink } from "react-router-dom";
 import api from "@/lib/api";
-import { redirect } from "@/lib/redirect";
+import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 
 const RegisterForm = () => {
   const BACKEND_URL = import.meta.env.VITE_BACKEND_PORT;
-  console.log(BACKEND_URL);
+  const redirect = useNavigate();
+
   const form = useForm<z.infer<typeof registerFormSchema>>({
     resolver: zodResolver(registerFormSchema),
     defaultValues: {
@@ -37,15 +38,14 @@ const RegisterForm = () => {
     try {
       const response = await api.post(`${BACKEND_URL}api/register`, values);
 
-      if (!response?.data)
-        return toast.error("Cannot Proceed, Have a problem plewase try again!");
+      if (!response?.data.success) return toast.error(response?.data.message);
 
       reset();
       redirect("/login");
     } catch (error: object | any) {
       toast.error(error?.data.message);
     } finally {
-      console.log("Done")
+      console.log("Done");
     }
   }
 
