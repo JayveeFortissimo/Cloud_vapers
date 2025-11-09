@@ -1,7 +1,7 @@
 import express from "express";
 import { UserController } from "../controller/user.controller";
 import { UserAuthenticationService } from "../services/user.service";
-import { verifyAuthenticationToken } from "../../middleware/middleware";
+import { verifyUserAuthenticationToken } from "../../middleware/user.middleware";
 import { UserRepository } from "../repositories/user.repository";
 
 const routes = express.Router();
@@ -12,6 +12,7 @@ const userController = new UserController(userService);
 
 routes.post("/register", userController.register);
 routes.post("/login", userController.login);
-routes.post("/logout", verifyAuthenticationToken, userController.logout);
+routes.post("/logout", verifyUserAuthenticationToken, userController.logout);
+routes.post("/refresh_token", userController.refreshtoken);
 
 export default routes;

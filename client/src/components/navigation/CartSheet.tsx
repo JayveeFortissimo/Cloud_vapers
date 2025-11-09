@@ -5,7 +5,7 @@ const CartSheet = () => {
 	return (
 		<Sheet>
 			<SheetTrigger asChild>
-				<ShoppingBasket className="cursor-pointer" />
+				<ShoppingBasket className="cursor-pointer" size={35}/>
 			</SheetTrigger>
 			<SheetContent className="px-6 py-3">adadasd</SheetContent>
 		</Sheet>

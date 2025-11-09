@@ -6,7 +6,7 @@ dotenv.config();
 
 const REFRESH_SECRET = process.env.REFRESH_TOKEN_SECRET as string;
 
-export const verifyAuthenticationToken: RequestHandler = (
+export const verifyUserAuthenticationToken: RequestHandler = (
   req: Request,
   res: Response,
   next: NextFunction
@@ -19,7 +19,7 @@ export const verifyAuthenticationToken: RequestHandler = (
     if (!users) return res.status(403).json({ message: "Invalid token" });
     (req as any).user = users;
     next();
-  } catch (err) {
-    return res.status(403).json({ message: "Invalid token" });
+  } catch (err: any) {
+    return res.status(403).json({ message: err });
   }
 };

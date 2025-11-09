@@ -1,18 +1,24 @@
 import { createSlice } from "@reduxjs/toolkit";
-// import type { PayloadAction } from "@reduxjs/toolkit";
+import type { PayloadAction } from "@reduxjs/toolkit";
 
 interface UserAuthenticationState {
-	name: string;
+	token: string | null;
 }
 
 const initialState: UserAuthenticationState = {
-	name: "Jayvee",
+	token: "",
 };
 
 export const userAuthenticationSlice = createSlice({
 	name: "userrAuthentication",
 	initialState,
-	reducers: {},
+	reducers: {
+         setToken: (state ,action:PayloadAction<string>) => {
+                 state.token = action.payload;
+		 }		 
+	},
 });
+
+export const {setToken} = userAuthenticationSlice.actions;
 
 export default userAuthenticationSlice.reducer;

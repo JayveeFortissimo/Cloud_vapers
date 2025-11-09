@@ -1,10 +1,9 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { loginFormSchema } from "@/lib/FormSchemas";
 import { Button } from "@/components/ui/Button";
 import { Checkbox } from "@/components/ui/Checkbox";
-import { socialsButtons } from "@/components/social-media-button/SocialMedias";
+import SpinnerCircle from "@/components/ui/Spinner";
 import {
   Form,
   FormControl,
@@ -15,8 +14,19 @@ import {
 } from "@/components/ui/Form";
 import { Input } from "@/components/ui/Input";
 import { NavLink } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { useState } from "react";
+
+import api from "@/lib/api";
+import toast from "@/lib/toast";
+import { loginFormSchema } from "@/lib/FormSchemas";
+import { socialsButtons } from "@/components/social-media-button/SocialMedias";
 
 const LoginForm = () => {
+  const router = useNavigate();
+  const BACKEND_URL = import.meta.env.VITE_BACKEND_PORT;
+  const [isLoading, setLoading] = useState(false);
+
   const form = useForm<z.infer<typeof loginFormSchema>>({
     resolver: zodResolver(loginFormSchema),
     defaultValues: {
@@ -25,8 +35,24 @@ const LoginForm = () => {
     },
   });
 
-  function onSubmit(values: z.infer<typeof loginFormSchema>) {
-    console.log(values);
+  const { handleSubmit, reset } = form;
+
+  async function onSubmit(values: z.infer<typeof loginFormSchema>) {
+    try {
+      setLoading(true);
+      const response = await api.post(`${BACKEND_URL}api/login`, values);
+
+      toast.success("Login Successfully !");
+
+      if (response?.data) {
+        reset();
+        router("/");
+      }
+    } catch (error: object | any) {
+      toast.error(error?.message);
+    } finally {
+      setLoading(false);
+    }
   }
 
   return (
@@ -38,7 +64,7 @@ const LoginForm = () => {
         </div>
 
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+          <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
             <FormField
               control={form.control}
               name="email"
@@ -49,6 +75,7 @@ const LoginForm = () => {
                   </FormLabel>
                   <FormControl>
                     <Input
+                      disabled={isLoading}
                       placeholder="JohnDoe@gmail.com"
                       {...field}
                       className="bg-white"
@@ -69,6 +96,7 @@ const LoginForm = () => {
                   </FormLabel>
                   <FormControl>
                     <Input
+                      disabled={isLoading}
                       placeholder="********"
                       {...field}
                       className="bg-white"
@@ -104,7 +132,7 @@ const LoginForm = () => {
             />
             <div className="w-full">
               <Button variant={"default"} type="submit" className="w-full">
-                Sign In
+                {isLoading ? <SpinnerCircle /> : "Sign in"}
               </Button>
             </div>
           </form>

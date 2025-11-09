@@ -6,7 +6,7 @@ import Products from "@/page/Products";
 import Contact from "@/page/Contact";
 import Login from "@/page/Login";
 import Register from "@/page/Register";
-import User from "@/page/userProfile/User";
+import User from "@/page/user-profile/User";
 // import Admin from "@/page/Admin/Admin";
 import SearchPage from "./page/SearchPage";
 
