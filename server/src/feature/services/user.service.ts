@@ -17,13 +17,13 @@ export class UserAuthenticationService {
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    const isExistingUser = await this.userRepository.findUserbyEmail(email);
+    const isExistingUser = await this.userRepository.findUser(email);
 
     if (isExistingUser.rows.length > 0) {
       return unifiedResponse(false, "User already exists", null);
     }
 
-    await this.userRepository.insertUser(username, hashedPassword, email);
+    await this.userRepository.registerUser(username, hashedPassword, email);
 
     return unifiedResponse(true, "User registered successfully", null);
   }
@@ -31,7 +31,7 @@ export class UserAuthenticationService {
   async login(loginInputObj: LoginInputTypes) {
     const { email, password } = loginInputObj;
 
-    const user = await this.userRepository.findUserbyEmail(email);
+    const user = await this.userRepository.findUser(email);
 
     const userPassword = await bcrypt.compare(password, user.rows[0].password);
 

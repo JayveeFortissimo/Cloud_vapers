@@ -19,7 +19,7 @@ export const verifyUserAuthenticationToken: RequestHandler = (
     if (!users) return res.status(403).json({ message: "Invalid token" });
     (req as any).user = users;
     next();
-  } catch (err) {
-    return res.status(403).json({ message: "Invalid token" });
+  } catch (err: any) {
+    return res.status(403).json({ message: err });
   }
 };
