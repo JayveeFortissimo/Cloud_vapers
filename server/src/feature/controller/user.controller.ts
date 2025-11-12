@@ -10,7 +10,7 @@ export class UserController {
   }
 
   register = async (
-    req: Request<{}, {}, RegisterInputTypes>,
+    req: Request<RegisterInputTypes>,
     res: Response,
     next: NextFunction
   ): Promise<void> => {
@@ -26,7 +26,7 @@ export class UserController {
   };
 
   login = async (
-    req: Request<{}, {}, LoginInputTypes>,
+    req: Request<LoginInputTypes>,
     res: Response,
     next: NextFunction
   ): Promise<void> => {
@@ -39,24 +39,25 @@ export class UserController {
         return;
       }
 
-      const refreshToken = result.data as { refresh_token: string };
-      const accessToken = result.data as { access_token: string };
-
-      res.cookie("refreshToken", refreshToken.refresh_token, {
+      const refreshTokenStr = (result.data as { refresh_token: string }).refresh_token;
+      const accessTokenStr = (result.data as { access_token: string }).access_token;
+         console.log("refreshTokens LOGIN: ", refreshTokenStr)
+         
+      res.cookie("refreshToken", refreshTokenStr, {
         httpOnly: true,
         // path: "/refresh_token",
         // sameSite: "strict",
         maxAge: 7 * 24 * 60 * 60 * 1000,
       });
 
-      res.status(200).json({ access_token: accessToken.access_token });
+      res.status(200).json({ access_token: accessTokenStr });
     } catch (error) {
       next(error);
     }
   };
 
   logout = async (req: Request, res: Response) => {
-    const isUserLogin = (req as any).user;
+    const isUserLogin = req.user;
 
     if (!isUserLogin) {
       res.status(401).json({ message: "Unauthorized" });
@@ -70,25 +71,26 @@ export class UserController {
   };
 
   refreshtoken = async (req: Request, res: Response) => {
- try{
-     const refreshToken = req.cookies.refreshToken;
+    try {
+      const refreshToken = req.cookies.refreshToken;
+      
+        console.log("REfresh", refreshToken)
+      if (!refreshToken) {
+        res.status(401).json({ message: "No refresh token provided" });
+        return;
+      }
 
-    if (!refreshToken) {
-      res.status(401).json({ message: "No refresh token provided" });
-      return;
+      const resultNewTokens = await this.userService.refreshToken(refreshToken);
+
+      res.cookie("refreshToken", resultNewTokens, {
+        httpOnly: true,
+        maxAge: 7 * 24 * 60 * 60 * 1000,
+      });
+
+      res.json({ access_token: resultNewTokens });
+    } catch (error) {
+      res.status(500).json({ message: "Internal server error" });
+      console.log(error);
     }
-
-    const resultNewTokens = await this.userService.refreshToken(refreshToken);
-
-    res.cookie("refreshToken", resultNewTokens, {
-      httpOnly: true,
-      maxAge: 7 * 24 * 60 * 60 * 1000,
-    });
-
-    res.json({ access_token: resultNewTokens });
-  }catch(error){
-    res.status(500).json({ message: "Internal server error" });
-  }
- }
- 
+  };
 }

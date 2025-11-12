@@ -4,7 +4,6 @@ import {
   accessToken,
   refreshToken,
   REFRESH_TOKEN_SECRET,
-  ACCESS_TOKEN_SECRET,
 } from "../../utils/tokens";
 import { RegisterInputTypes, LoginInputTypes } from "../types/user.types";
 import { UserRepository } from "../repositories/user.repository";
@@ -51,21 +50,21 @@ export class UserAuthenticationService {
   }
 
   async refreshToken(refreshToken: string) {
-    const newtokens = jwt.verify(
-      refreshToken,
-      REFRESH_TOKEN_SECRET,
-      (err, user: any) => {
-        console.log("from user Refresh Token", user);
-        if (err) return unifiedResponse(false, "Invalid refresh token", null);
-        const newAccessToken = jwt.sign({ id: user.id }, ACCESS_TOKEN_SECRET, {
-          expiresIn: "15m",
-        });
+    const user = jwt.verify(refreshToken, REFRESH_TOKEN_SECRET) as {
+      user_id: string;
+    };
 
-        return unifiedResponse(true, "New access token generated", {
-          access_token: newAccessToken,
-        });
-      }
-    );
-    return newtokens;
+    console.log("from user Refresh Token", user);
+
+    if (!user) return unifiedResponse(false, "Invalid refresh token", null);
+    //new token 2
+    const newAccessToken = accessToken({ user_id: user.user_id as string });
+
+    console.log("newAccessToken", newAccessToken);
+    console.log("user", user);
+
+    return unifiedResponse(true, "New access token generated", {
+      // access_token: newAccessToken,
+    });
   }
 }

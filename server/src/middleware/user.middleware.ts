@@ -6,6 +6,12 @@ dotenv.config();
 
 const REFRESH_SECRET = process.env.REFRESH_TOKEN_SECRET as string;
 
+declare module "express-serve-static-core" {
+  interface Request {
+    user?: JwtPayload;
+  }
+}
+
 export const verifyUserAuthenticationToken: RequestHandler = (
   req: Request,
   res: Response,
@@ -17,9 +23,9 @@ export const verifyUserAuthenticationToken: RequestHandler = (
   try {
     const users = jwt.verify(token, REFRESH_SECRET) as JwtPayload;
     if (!users) return res.status(403).json({ message: "Invalid token" });
-    (req as any).user = users;
+    req.user = users;
     next();
-  } catch (err: any) {
+  } catch (err: unknown) {
     return res.status(403).json({ message: err });
   }
 };
