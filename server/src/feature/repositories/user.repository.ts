@@ -16,4 +16,11 @@ export class UserRepository {
       [username, hashedPassword, email.trim()]
     );
   }
+
+  async getUser(user_id: number) {
+    return await this.db.query(
+      "SELECT username, email FROM usercredentials WHERE user_id = $1",
+      [user_id]
+    );
+  }
 }

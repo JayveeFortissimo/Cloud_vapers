@@ -4,7 +4,9 @@ import dotenv from "dotenv";
 
 dotenv.config();
 
-const REFRESH_SECRET = process.env.REFRESH_TOKEN_SECRET as string;
+// const REFRESH_SECRET = process.env.REFRESH_TOKEN_SECRET as string;
+const ACCESS_SECRET = process.env.ACCESS_TOKEN_SECRET as string;
+
 
 declare module "express-serve-static-core" {
   interface Request {
@@ -12,16 +14,17 @@ declare module "express-serve-static-core" {
   }
 }
 
-export const verifyUserAuthenticationToken: RequestHandler = (
+export const verifyAccessToken: RequestHandler = (
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
-  const token = req.cookies["refreshToken"];
+  const auth = req.headers.authorization;
+  const token = auth?.split(" ")[1];
   if (!token) return res.status(403).json({ message: "No token" });
 
   try {
-    const users = jwt.verify(token, REFRESH_SECRET) as JwtPayload;
+    const users = jwt.verify(token, ACCESS_SECRET) as JwtPayload;
     if (!users) return res.status(403).json({ message: "Invalid token" });
     req.user = users;
     next();
@@ -29,3 +32,5 @@ export const verifyUserAuthenticationToken: RequestHandler = (
     return res.status(403).json({ message: err });
   }
 };
+
+

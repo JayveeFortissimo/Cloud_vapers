@@ -5,7 +5,7 @@ import { ShineBorder } from "../ui/ShineBorder";
 import { Search, CircleUserRound } from "lucide-react";
 import CartSheet from "./CartSheet";
 import { useNavigate } from "react-router-dom";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+// import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 const Navbar = () => {
   const navigate = useNavigate();

@@ -10,7 +10,7 @@ const initialState: UserAuthenticationState = {
 };
 
 export const userAuthenticationSlice = createSlice({
-	name: "userrAuthentication",
+	name: "userAuthentication",
 	initialState,
 	reducers: {
          setToken: (state ,action:PayloadAction<string>) => {

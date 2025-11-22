@@ -4,7 +4,7 @@ import { aboutData } from "@/lib/aboutPage";
 const About = () => {
   return (
     <Container>
-      <div className="container mx-auto min-h-screen text-white flex flex-col  gap-5 p-10">
+      <div className="container mx-auto min-h-screen text-white flex flex-col gap-5 p-10">
         {aboutData.map((pro) => (
           <div key={pro.name} className="flex flex-col gap-5">
             <h1 className="text-2xl font-bold font-oleo">{pro.name}</h1>

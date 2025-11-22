@@ -38,6 +38,9 @@ export class UserAuthenticationService {
       return unifiedResponse(false, "Invalid password", null);
     }
 
+    if (user.rows[0].email !== email) {
+      return unifiedResponse(false, "Invalid email", null);
+    }
     const { user_id, username, age } = user.rows[0];
 
     const access_token = accessToken({ user_id, username, age });
@@ -50,21 +53,28 @@ export class UserAuthenticationService {
   }
 
   async refreshToken(refreshToken: string) {
-    const user = jwt.verify(refreshToken, REFRESH_TOKEN_SECRET) as {
+    const userDecoded = jwt.verify(refreshToken, REFRESH_TOKEN_SECRET) as {
       user_id: string;
+      username: string;
+      age: string;
     };
 
-    console.log("from user Refresh Token", user);
+    if (!userDecoded)
+      return unifiedResponse(false, "Invalid refresh token", null);
 
-    if (!user) return unifiedResponse(false, "Invalid refresh token", null);
-    //new token 2
-    const newAccessToken = accessToken({ user_id: user.user_id as string });
-
-    console.log("newAccessToken", newAccessToken);
-    console.log("user", user);
+    const newAccessToken = accessToken({
+      user_id: userDecoded.user_id as string,
+      username: userDecoded.username as string,
+      age: userDecoded.age as string,
+    });
 
     return unifiedResponse(true, "New access token generated", {
-      // access_token: newAccessToken,
+      access_token: newAccessToken,
     });
+  }
+
+  async getProfile(user_id: number) {
+    const getProfile = await this.userRepository.getUser(user_id);
+    return getProfile.rows[0];
   }
 }
