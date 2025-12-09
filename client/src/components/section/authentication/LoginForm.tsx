@@ -19,7 +19,7 @@ import { useState } from "react";
 
 import api from "@/lib/api";
 import toast from "@/lib/toast";
-import { loginFormSchema } from "@/lib/FormSchemas";
+import { loginFormSchema } from "@/lib/formSchemas";
 import { socialsButtons } from "@/components/social-media-button/SocialMedias";
 
 const LoginForm = () => {

@@ -10,13 +10,13 @@ export const BTN:BtnConfig[] = [
         name:"More details",
         links:'',
         variant:'ghost',
-        classname:''
+        classname:'flex-1'
     },
      {
         name:"Add to cart",
         links:'',
         variant:'productBtn',
-        classname:''
+        classname:'flex-1'
     }
 
 ]

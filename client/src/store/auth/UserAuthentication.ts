@@ -2,23 +2,23 @@ import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
 
 interface UserAuthenticationState {
-	token: string | null;
+  token: string | null;
 }
 
 const initialState: UserAuthenticationState = {
-	token: "",
+  token: "",
 };
 
 export const userAuthenticationSlice = createSlice({
-	name: "userAuthentication",
-	initialState,
-	reducers: {
-         setToken: (state ,action:PayloadAction<string>) => {
-                 state.token = action.payload;
-		 }		 
-	},
+  name: "userAuthentication",
+  initialState,
+  reducers: {
+    setToken: (state, action: PayloadAction<string>) => {
+      state.token = action.payload;
+    },
+  },
 });
 
-export const {setToken} = userAuthenticationSlice.actions;
+export const { setToken } = userAuthenticationSlice.actions;
 
 export default userAuthenticationSlice.reducer;

@@ -12,7 +12,7 @@ import {
   FormMessage,
 } from "@/components/ui/Form";
 import { Input } from "@/components/ui/Input";
-import { contactFormSchema } from "@/lib/FormSchemas";
+import { contactFormSchema } from "@/lib/formSchemas";
 // import { useState } from "react";
 
 const ContactForm = () => {
@@ -131,8 +131,9 @@ const ContactForm = () => {
           />
 
           <div className="w-full">
-            <Button variant={"default"} type="submit" className="w-full">
-              {isLoading ? <SpinnerCircle /> : "Submit"}
+            <Button variant={"productBtn"} type="submit" className="w-full">
+              {/* {isLoading ? <SpinnerCircle /> : "Submit"} */}
+              Submit
             </Button>
           </div>
         </form>

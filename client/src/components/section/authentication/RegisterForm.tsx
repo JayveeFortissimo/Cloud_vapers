@@ -1,7 +1,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { registerFormSchema } from "@/lib/FormSchemas";
+import { registerFormSchema } from "@/lib/formSchemas";
 import { Button } from "@/components/ui/Button";
 import { socialsButtons } from "@/components/social-media-button/SocialMedias";
 import {

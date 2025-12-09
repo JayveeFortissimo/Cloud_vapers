@@ -1,11 +1,11 @@
 import Container from "@/components/common/Container";
 import LogoImage from '@/assets/images/VapeIcon.png';
-import ContactForm from "@/components/section/contact/contactForm";
+import ContactForm from "@/components/section/contact/ContactForm";
 
 const Contact = () => {
   return (
     <Container>
-      <div className="min-h-[50rem] grid grid-cols-1  md:grid-cols-2 ">
+      <div className="min-h-[50rem] grid grid-cols-1 md:grid-cols-2 gap-5">
 		<div className="flex flex-col justify-center items-center gap-6">
              <img src={LogoImage} alt="Image Logo" />
 			 <div className="flex flex-col gap-3 items-center">
