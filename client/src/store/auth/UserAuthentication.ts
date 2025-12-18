@@ -43,6 +43,33 @@ export const fetchUsers = createAsyncThunk(
   }
 )
 
+
+// export const logout = createAsyncThunk(
+//   'users/logout',
+//   async (_, {getState, rejectWithValue }) => {
+//   try {
+//       const state = getState() as RootState;
+//       const token = state.userAuthenticationSlice.accesstoken;
+      
+//       if (!token) {
+//         return rejectWithValue("No access token available");
+//       }
+
+//       const res = await api.get('api/profile',{
+//         headers:{
+//           'Authorization': `Bearer ${token}`
+//         }
+//       })
+       
+//        return res.data.user; 
+//     } catch (err: any) {
+//       console.error("logout Error: ", err);
+//       const errorMessage = err?.message || err?.data?.message || "logout error";
+//       return rejectWithValue(errorMessage);
+//     }
+//   }
+// )
+
 export const userAuthenticationSlice = createSlice({
   name: "userAuthentication",
   initialState,

@@ -1,13 +1,21 @@
+import { Search, CircleUserRound } from "lucide-react";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/Avatar";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/DropdownMenus";
+
 import { Logo } from "./Logo";
 import { NavMenu } from "./NavMenu";
 import { NavigationSheet } from "./NavigationSheet";
 import { ShineBorder } from "../ui/ShineBorder";
-import { Search, CircleUserRound } from "lucide-react";
 import CartSheet from "./CartSheet";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import type { RootState } from "@/store/store";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/Avatar";
 
 const Navbar = () => {
   const navigate = useNavigate();
@@ -25,21 +33,42 @@ const Navbar = () => {
         </div>
 
         <div className="flex items-center gap-3">
-          {isAuthenticated ? (
-            <Avatar 
-            className="cursor-pointer"
-            onClick={() => navigate('/user')}
-            >
-              <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
-              <AvatarFallback>CN</AvatarFallback>
-            </Avatar>
-          ) : (
-            <CircleUserRound
-              className="hidden md:block cursor-pointer"
-              size={35}
-              onClick={() => navigate("/login")}
-            />
-          )}
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              {isAuthenticated ? (
+                <Avatar className="cursor-pointer">
+                  <AvatarImage
+                    src="https://github.com/shadcn.png"
+                    alt="@shadcn"
+                  />
+                  <AvatarFallback>CN</AvatarFallback>
+                </Avatar>
+              ) : (
+                <CircleUserRound
+                  className="hidden md:block cursor-pointer"
+                  size={35}
+                  onClick={() => navigate("/login")}
+                />
+              )}
+            </DropdownMenuTrigger>
+
+            <DropdownMenuContent align="end">
+              <DropdownMenuItem className="hover:cursor-pointer" asChild>
+                <div onClick={() => navigate("/user")}>My Profile</div>
+              </DropdownMenuItem>
+
+              <DropdownMenuItem className="hover:cursor-pointer" asChild>
+                <div>Settings</div>
+              </DropdownMenuItem>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem
+                className="hover:cursor-pointer text-logout"
+                // onClick={handleLogout}
+              >
+                Logout
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
 
           <Search
             className="cursor-pointer"
