@@ -7,7 +7,6 @@ import type {
   InternalAxiosRequestConfig,
 } from 'axios'
 
-
 interface ApiResponse<T = any> {
   ok: any
   data: T

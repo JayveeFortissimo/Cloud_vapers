@@ -43,9 +43,8 @@ export class UserController {
         .refresh_token;
       const accessTokenStr = (result.data as { access_token: string })
         .access_token;
-      console.log("refreshTokens LOGIN: ", refreshTokenStr);
 
-      res.cookie("refreshToken", refreshTokenStr, {
+      res.cookie("jwtToken", refreshTokenStr, {
         httpOnly: true,
         // path: "/refresh_token",
         // sameSite: "strict",
@@ -66,7 +65,7 @@ export class UserController {
       return;
     }
 
-    res.clearCookie("refreshToken");
+    res.clearCookie("jwtToken");
 
     res.json({ message: "Logout successful" });
     return;
@@ -74,21 +73,16 @@ export class UserController {
 
   refreshtoken = async (req: Request, res: Response) => {
     try {
-      const refreshToken = req.cookies.refreshToken;
+      const refreshTokens = req.cookies.jwtToken;
 
-      if (!refreshToken) {
+      if (!refreshTokens) {
         res.status(401).json({ message: "No refresh token provided" });
         return;
       }
 
-      const result = await this.userService.refreshToken(refreshToken);
+      const result = await this.userService.refreshToken(refreshTokens);
 
       const newAccessToken = result?.data as { access_token: string };
-
-      res.cookie("refreshToken", newAccessToken.access_token as string, {
-        httpOnly: true,
-        maxAge: 7 * 24 * 60 * 60 * 1000,
-      });
 
       res.json({ access_token: newAccessToken.access_token as string });
     } catch (error) {

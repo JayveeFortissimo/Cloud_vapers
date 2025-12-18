@@ -1,8 +1,8 @@
 import { configureStore } from "@reduxjs/toolkit";
-import UserAutghenticationReducer from "./auth/UserAuthentication";
+import userAuthenticationSlice from "@/store/auth/UserAuthentication";
 
 export const store = configureStore({
-	reducer: { UserAutghenticationReducer },
+	reducer: { userAuthenticationSlice },
 });
 
 export type RootState = ReturnType<typeof store.getState>;

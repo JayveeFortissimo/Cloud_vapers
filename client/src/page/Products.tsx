@@ -1,9 +1,10 @@
 import { allProducts, priceRange } from "@/lib/dummyProducts";
 import MyDropdowns from "@/components/ui/Dropdown";
 import { Button } from "@/components/ui/Button";
-import { ShoppingCart } from 'lucide-react';
+import { ShoppingCart } from 'lucide-react'; 
 
 const Products = () => {
+
   return (
     <div className="container mx-auto flex flex-col py-10 px-5 md:px-0 gap-5">
       <header className="flex justify-between">

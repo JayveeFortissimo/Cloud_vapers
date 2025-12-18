@@ -21,11 +21,14 @@ import api from "@/lib/api";
 import toast from "@/lib/toast";
 import { loginFormSchema } from "@/lib/formSchemas";
 import { socialsButtons } from "@/components/social-media-button/SocialMedias";
+import { useDispatch } from 'react-redux'
+import { setToken } from "@/store/auth/UserAuthentication";
 
 const LoginForm = () => {
   const router = useNavigate();
-  const BACKEND_URL = import.meta.env.VITE_BACKEND_PORT;
   const [isLoading, setLoading] = useState(false);
+
+  const dispatch = useDispatch();
 
   const form = useForm<z.infer<typeof loginFormSchema>>({
     resolver: zodResolver(loginFormSchema),
@@ -40,11 +43,12 @@ const LoginForm = () => {
   async function onSubmit(values: z.infer<typeof loginFormSchema>) {
     try {
       setLoading(true);
-      const response = await api.post(`${BACKEND_URL}api/login`, values);
-
+      const response = await api.post(`api/login`, values);
+ 
       toast.success("Login Successfully !");
 
       if (response?.data) {
+        dispatch(setToken(response?.data?.access_token))
         reset();
         router("/");
       }

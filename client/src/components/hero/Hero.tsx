@@ -1,8 +1,13 @@
 import { Button } from "../ui/Button";
 import HeroImage from "../../assets/images/HeroImage.png";
 import { BTN } from "@/lib/buttons";
+import { useSelector } from "react-redux";
+import type { RootState } from "@/store/store";
 
 const Hero = ({ title, sub }: { title: string; sub: string }) => {
+    const isAuthenticated = useSelector((state: RootState )=> state.userAuthenticationSlice.user);
+      console.log("User:", isAuthenticated);
+      
   return (
     <div className="container mx-auto p-4 min-h-[50rem] grid grid-cols-1 md:grid-cols-2 place-items-center">
       <section className="text-white w-full flex flex-col gap-5 justify-center items-center ">
