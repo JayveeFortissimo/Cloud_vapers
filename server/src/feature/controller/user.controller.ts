@@ -59,7 +59,7 @@ export class UserController {
 
   logout = async (req: Request, res: Response) => {
     const isUserLogin = req.user;
-
+   
     if (!isUserLogin) {
       res.status(401).json({ message: "Unauthorized" });
       return;

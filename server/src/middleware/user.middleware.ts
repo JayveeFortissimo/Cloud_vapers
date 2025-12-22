@@ -22,7 +22,7 @@ export const verifyAccessToken: RequestHandler = (
   const auth = req.headers.authorization;
   const token = auth?.split(" ")[1];
   if (!token) return res.status(403).json({ message: "No token" });
-
+ 
   try {
     const users = jwt.verify(token, ACCESS_SECRET) as JwtPayload;
     if (!users) return res.status(403).json({ message: "Invalid token" });

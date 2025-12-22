@@ -44,32 +44,6 @@ export const fetchUsers = createAsyncThunk(
 )
 
 
-// export const logout = createAsyncThunk(
-//   'users/logout',
-//   async (_, {getState, rejectWithValue }) => {
-//   try {
-//       const state = getState() as RootState;
-//       const token = state.userAuthenticationSlice.accesstoken;
-      
-//       if (!token) {
-//         return rejectWithValue("No access token available");
-//       }
-
-//       const res = await api.get('api/profile',{
-//         headers:{
-//           'Authorization': `Bearer ${token}`
-//         }
-//       })
-       
-//        return res.data.user; 
-//     } catch (err: any) {
-//       console.error("logout Error: ", err);
-//       const errorMessage = err?.message || err?.data?.message || "logout error";
-//       return rejectWithValue(errorMessage);
-//     }
-//   }
-// )
-
 export const userAuthenticationSlice = createSlice({
   name: "userAuthentication",
   initialState,
@@ -77,6 +51,10 @@ export const userAuthenticationSlice = createSlice({
     setToken: (state, action: PayloadAction<string>) => {
       state.accesstoken = action.payload;
     },
+    logout: (state) => {
+      state.accesstoken = "";
+      state.user = null;
+    }
   },
     extraReducers: (builder) => {
     builder
@@ -84,7 +62,6 @@ export const userAuthenticationSlice = createSlice({
         state.isLoading = true;
       })
       .addCase(fetchUsers.fulfilled, (state, action) => {
-        console.log("FULFILLED FETCH USERS", action.payload)
         state.isLoading = false;
         state.user = action.payload; 
         state.error = undefined; 
@@ -96,5 +73,5 @@ export const userAuthenticationSlice = createSlice({
   },
 });
 
-export const { setToken } = userAuthenticationSlice.actions;
+export const { setToken, logout } = userAuthenticationSlice.actions;
 export default userAuthenticationSlice.reducer;
