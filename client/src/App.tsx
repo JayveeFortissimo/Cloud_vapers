@@ -9,6 +9,7 @@ import Register from "@/page/auth/Register";
 import User from "@/page/user-profile/User";
 // import Admin from "@/page/Admin/Admin";
 import SearchPage from "./page/SearchPage";
+import RequiredAuth from "./RequiredAuth";
 
 function App() {
 	const router = createBrowserRouter([
@@ -42,7 +43,13 @@ function App() {
 				},
 				{
 					path: "user",
-					element: <User />,
+					element: <RequiredAuth/>,
+					children: [
+						{
+							index: true,
+							element: <User />,
+						},
+					],
 				},
 				{
 					path: "searchpage",

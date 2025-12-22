@@ -3,6 +3,7 @@ import { type RootState } from "@/store/store";
 import { Outlet } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 import { Toaster } from "sonner";
+import { Navigate } from "react-router-dom";
 
 import Navbar from "@/components/navigation/NavBar";
 import Container from "@/components/common/Container";
@@ -12,12 +13,8 @@ import { fetchUsers, setToken } from "@/store/auth/UserAuthentication";
 
 const Outlets = () => {
   const dispatch = useDispatch();
-  const isAuthenticated = useSelector(
-    (state: RootState) => state.userAuthenticationSlice.user
-  );
-  const accessToken = useSelector(
-    (state: RootState) => state.userAuthenticationSlice.accesstoken
-  );
+  const isAuthenticated = useSelector((state: RootState) => state.userAuthenticationSlice.user);
+  const accessToken = useSelector((state: RootState) => state.userAuthenticationSlice.accesstoken);
   const params = useLocation();
   const notAllowedNavars = ["/login", "/register", "/searchpage", "/admin"];
 
