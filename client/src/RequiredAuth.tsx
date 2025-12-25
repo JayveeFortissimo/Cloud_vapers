@@ -4,14 +4,12 @@ import { Navigate, Outlet, useLocation } from "react-router-dom";
 
 const RequiredAuth = () => {
   const location = useLocation();
-  const isAuthenticated = useSelector(
-    (state: RootState) => state.userAuthenticationSlice.user
-  );
-  const accessToken = useSelector(
-    (state: RootState) => state.userAuthenticationSlice.accesstoken
-  );
 
-  if (accessToken === null || !isAuthenticated) {
+  const { user , autoCheck} = useSelector((state: RootState) => state.userAuthenticationSlice);
+
+  if (autoCheck) {
+    return <div>Loading...</div>;
+  } else if (!user) {
     return <Navigate to="/login" state={{ from: location }} replace />;
   }
 
@@ -19,3 +17,4 @@ const RequiredAuth = () => {
 };
 
 export default RequiredAuth;
+

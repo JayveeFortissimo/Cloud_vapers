@@ -8,12 +8,14 @@ interface UserAuthenticationState {
   user: {username:string, email:string} | null;
   isLoading:boolean;
   error?:string;
+  autoCheck: boolean;
 }
 
 const initialState: UserAuthenticationState = {
   accesstoken: "",
   user: null,
-  isLoading:false
+  isLoading:false,
+  autoCheck: true,
 };
 
 export const fetchUsers = createAsyncThunk(
@@ -54,7 +56,10 @@ export const userAuthenticationSlice = createSlice({
     logout: (state) => {
       state.accesstoken = "";
       state.user = null;
-    }
+    },
+    setAutoCheck: (state, action: PayloadAction<boolean>) => {
+      state.autoCheck = action.payload;
+    },
   },
     extraReducers: (builder) => {
     builder
@@ -73,5 +78,5 @@ export const userAuthenticationSlice = createSlice({
   },
 });
 
-export const { setToken, logout } = userAuthenticationSlice.actions;
+export const { setToken, logout, setAutoCheck } = userAuthenticationSlice.actions;
 export default userAuthenticationSlice.reducer;
