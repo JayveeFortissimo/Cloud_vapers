@@ -37,7 +37,6 @@ const Outlets = () => {
         console.log(error?.message);
       }finally{
         dispatch(setAutoCheck(false));
-        return;
       }
     };
 

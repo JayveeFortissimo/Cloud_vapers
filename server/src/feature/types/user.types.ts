@@ -11,7 +11,6 @@ export interface LoginInputTypes {
   password: string;
 }
 
-
 export interface AuthRequest extends Request {
   user?: JwtPayload;
 }
