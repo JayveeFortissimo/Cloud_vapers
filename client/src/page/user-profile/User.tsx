@@ -35,11 +35,11 @@ const User = () => {
           <p className="text-xs">{user?.email}</p>
         </div>
 
-        <div className="mt-10 flex gap-10">
+        <div className="mt-10 flex gap-5">
           {tabs.map((tab, index) => (
             <p
               key={index}
-              className={`${tab.active ? "border" : undefined}  p-1 rounded cursor-pointer`}
+              className={`${tab.name === activeTab ? "border" : undefined}  p-1 rounded cursor-pointer`}
               onClick={() => setActiveTab(tab.name)}
             >
               {tab.name}
