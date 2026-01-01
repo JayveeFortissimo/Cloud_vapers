@@ -5,7 +5,7 @@ import type { RootState } from "../store";
 
 interface UserAuthenticationState {
   accesstoken: string | null;
-  user: {username:string, email:string} | null;
+  user: {username:string, email:string, isAdmin:boolean} | null;
   isLoading:boolean;
   error?:string;
   autoCheck: boolean;
