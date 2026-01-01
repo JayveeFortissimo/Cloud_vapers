@@ -7,63 +7,68 @@ import Contact from "@/page/Contact";
 import Login from "@/page/auth/Login";
 import Register from "@/page/auth/Register";
 import User from "@/page/user-profile/User";
-// import Admin from "@/page/Admin/Admin";
+import Admin from "@/page/Admin/Admin";
 import SearchPage from "./page/SearchPage";
 import RequiredAuth from "./RequiredAuth";
 
 function App() {
-	const router = createBrowserRouter([
+  const router = createBrowserRouter([
+    {
+      path: "/",
+      element: <Outlets />,
+      children: [
+        {
+          index: true,
+          element: <Home />,
+        },
+        {
+          path: "about",
+          element: <About />,
+        },
+        {
+          path: "contact",
+          element: <Contact />,
+        },
+        {
+          path: "products",
+          element: <Products />,
+        },
+        {
+          path: "login",
+          element: <Login />,
+        },
+        {
+          path: "register",
+          element: <Register />,
+        },
+        {
+          path: "user",
+          element: <RequiredAuth />,
+          children: [
+            {
+              index: true,
+              element: <User />,
+            },
+          ],
+        },
+    
+        {
+          path: "searchpage",
+          element: <SearchPage />,
+        },
 		{
-			path: "/",
-			element: <Outlets />,
-			children: [
-				{
-					index: true,
-					element: <Home />,
-				},
-				{
-					path: "about",
-					element: <About />,
-				},
-				{
-					path: "contact",
-					element: <Contact />,
-				},
-				{
-					path: "products",
-					element: <Products />,
-				},
-				{
-					path: "login",
-					element: <Login />,
-				},
-				{
-					path: "register",
-					element: <Register />,
-				},
-				{
-					path: "user",
-					element: <RequiredAuth/>,
-					children: [
-						{
-							index: true,
-							element: <User />,
-						},
-					],
-				},
-				{
-					path: "searchpage",
-					element: <SearchPage />,
-				},
-			],
-		},
-	]);
+          path: "admin",
+          element: <Admin />,
+        },
+      ],
+    },
+  ]);
 
-	return (
-		<div>
-			<RouterProvider router={router} />
-		</div>
-	);
+  return (
+    <div>
+      <RouterProvider router={router} />
+    </div>
+  );
 }
 
 export default App;

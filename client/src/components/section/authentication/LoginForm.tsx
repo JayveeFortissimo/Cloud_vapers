@@ -21,11 +21,15 @@ import api from "@/lib/api";
 import toast from "@/lib/toast";
 import { loginFormSchema } from "@/lib/formSchemas";
 import { socialsButtons } from "@/components/social-media-button/SocialMedias";
-import { useDispatch } from 'react-redux'
-import { setToken } from "@/store/auth/UserAuthentication";
+import { useDispatch, useSelector } from 'react-redux'
+import type { RootState } from "@/store/store";
+import { setToken, fetchUsers } from "@/store/auth/UserAuthentication";
 
 const LoginForm = () => {
+  
   const router = useNavigate();
+  const { user } = useSelector((state: RootState) => state.userAuthenticationSlice);
+   console.log("This is from login form: ", user);
   const [isLoading, setLoading] = useState(false);
 
   const dispatch = useDispatch();
@@ -48,15 +52,31 @@ const LoginForm = () => {
       toast.success("Login Successfully !");
 
       if (response?.data) {
-        dispatch(setToken(response?.data?.access_token))
+
+        dispatch(setToken(response?.data?.access_token));
+     
+        const userResult = await dispatch(fetchUsers() as any);
+            
+        if (fetchUsers.fulfilled.match(userResult)) {
+          const userData = userResult.payload;
+          
+          const isAdmin = userData?.isadmin === true || userData?.isAdmin === true;
+          if (isAdmin) {
+            router("/admin");
+          } else {
+            router("/");
+          }
+        } else {
+          router("/");
+        }
+        
         reset();
-        router("/");
       }
     } catch (error: object | any) {
       toast.error(error?.message);
     } finally {
       setLoading(false);
-    }
+    }  
   }
 
   return (

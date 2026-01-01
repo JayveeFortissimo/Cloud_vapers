@@ -35,6 +35,10 @@ const RegisterForm = () => {
   const { handleSubmit, reset } = form;
 
   async function onSubmit(values: z.infer<typeof registerFormSchema>) {
+    if (values.password !== values.confirmPassword) {
+      return toast.error("Passwords do not match");
+    }
+
     try {
       const response = await api.post(`${BACKEND_URL}api/register`, values);
 

@@ -95,8 +95,8 @@ export class UserController {
     try {
       const userEmail = req.user;
       const user = await this.userService.getProfile(userEmail?.user_id);
-
-      res.status(201).json({ user: user });
+   
+      res.status(201).json({ user: {username:user.username, email:user.email, isAdmin:user.isadmin} });
     } catch (_error) {
       console.log(_error);
     }
