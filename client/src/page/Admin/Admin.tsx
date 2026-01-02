@@ -18,8 +18,19 @@ import Users from "./tabs/Users";
 import Reports from "./tabs/Reports";
 import Message from "./tabs/Message";
 import Calendars from "./tabs/Calendar";
+import api from "@/lib/api";
+import { useDispatch, useSelector } from "react-redux";
+import { logout } from "@/store/auth/UserAuthentication";
+import { useNavigate } from "react-router-dom";
+import type { RootState } from "@/store/store";
 
 const Admin = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const token = useSelector(
+    (state: RootState) => state.userAuthenticationSlice.accesstoken
+  );
+
   const asideContent: { name: string; icon: JSX.Element }[] = [
     { name: "Dashboard", icon: <LayoutDashboard /> },
     { name: "Products", icon: <PackageSearch /> },
@@ -44,6 +55,21 @@ const Admin = () => {
     Calendar: <Calendars />,
   };
 
+  const logoutUser = async () => {
+    try {
+      await api.post("api/logout", {}, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      dispatch(logout() as any);
+      navigate("/login");
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <section className="min-h-screen grid grid-cols-1 md:grid-cols-[auto_1fr]">
       <aside className="bg-white p-4 w-70 hidden md:flex flex-col justify-between">
@@ -63,7 +89,10 @@ const Admin = () => {
           ))}
         </section>
 
-        <footer className="p-3 mb-2 bg-white rounded hover:bg-gray-300 cursor-pointer">
+        <footer
+          className="p-3 mb-2 bg-white rounded hover:bg-gray-300 cursor-pointer"
+          onClick={logoutUser}
+        >
           Logout
         </footer>
       </aside>

@@ -1,6 +1,6 @@
 import { ProductsService } from "../services/products.service";
 import { Request, Response } from "express";
-
+import { Products } from "../types/products";
 
 interface GetProductsQuery {
   page?: string;
@@ -10,8 +10,15 @@ interface GetProductsQuery {
 export class ProductsController {
   constructor(private readonly productService: ProductsService) {}
 
-  getAllProducts = async (req: Request<Record<string, never>, string, Record<string, never>,GetProductsQuery>, res: Response) => {
-
+  getAllProducts = async (
+    req: Request<
+      Record<string, never>,
+      string,
+      Record<string, never>,
+      GetProductsQuery
+    >,
+    res: Response
+  ) => {
     const pageStr = req.query.page || "1";
     const limitStr = req.query.limit || "10";
 
@@ -27,7 +34,7 @@ export class ProductsController {
         pagination: {
           currentPage: page,
           perPage: limit,
-                  // Baguhin mo to base sa stocks ha
+          // Baguhin mo to base sa stocks ha
           total: products.length,
           totalPages: Math.ceil(products.length / limit),
         },
@@ -35,6 +42,23 @@ export class ProductsController {
     } catch (_error) {
       console.log(_error);
       res.status(500).json({ message: "Internal Server Error" });
+    }
+  };
+
+  addAllproducts = async (req: Request<Products[]>, res: Response) => {
+    try {
+      const { products } = req.body;
+
+    if (!Array.isArray(products)) {
+      return res.status(400).json({ message: "Payload must be an array" });
+    }
+     
+      await this.productService.addItems(products);
+
+      res.status(200).json({ message: "Product added successfully" });
+    } catch (_error) {
+      console.log(_error);
+      res.status(500).json({ message: "Product added not successfully" });
     }
   };
 }
