@@ -1,7 +1,7 @@
 const EditItems = () => {
   return (
-    <div>
-      
+     <div className="flex-1 overflow-auto p-4">
+      Edit Items
     </div>
   )
 }

@@ -1,6 +1,6 @@
 import { Input } from "@/components/ui/Input";
 import { Bell, Settings, Search, Filter } from "lucide-react";
-import SwitchCustomizationDemo from "@/components/ui/Night";
+import SwitchCustomizationDemo from "@/components/common/Night";
 
 const Dashboard = () => {
   return (

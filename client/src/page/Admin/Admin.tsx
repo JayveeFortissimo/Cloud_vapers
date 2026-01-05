@@ -27,9 +27,7 @@ import type { RootState } from "@/store/store";
 const Admin = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const token = useSelector(
-    (state: RootState) => state.userAuthenticationSlice.accesstoken
-  );
+  const token = useSelector((state: RootState) => state.userAuthenticationSlice.accesstoken);
 
   const asideContent: { name: string; icon: JSX.Element }[] = [
     { name: "Dashboard", icon: <LayoutDashboard /> },
@@ -81,7 +79,7 @@ const Admin = () => {
           {asideContent.map((item, index) => (
             <div
               key={index}
-              className="p-3 mb-2 bg-white rounded hover:bg-gray-300 cursor-pointer flex items-center gap-2"
+              className={`p-3 mb-2 rounded hover:bg-gray-300 cursor-pointer flex items-center gap-2 ${activeItem === item.name ? "bg-gray-300" : ""}`}
               onClick={() => setActiveItem(item.name)}
             >
               {item.icon} <span className="ml-2">{item.name}</span>
