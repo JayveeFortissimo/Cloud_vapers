@@ -10,10 +10,8 @@ import { type RootState } from "@/store/store";
 
 const Products = () => {
   const dispatch = useDispatch<AppDispatch>();
-  const { productList } = useSelector(
-    (state: RootState) => state.allProducts
-  );
-  console.log("productList: ", productList);
+  const { productList } = useSelector((state: RootState) => state.allProducts);
+  
   useEffect(() => {
     dispatch(fetchAllProducts());
   }, [dispatch]);

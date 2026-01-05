@@ -39,3 +39,15 @@ export const contactFormSchema = z.object({
     .min(1, { message: "Message is grater than 1 character." }) 
     .max(500, { message: "Message is less than 500 characters." }),
 });
+
+
+export const itemsFormSchema = z.object({
+  product_name: z.string("Product Name is required").min(2).max(100),
+  product_price: z.number("Product Price is required").min(0),
+  stocks: z.number("Stocks is required").min(0),
+  sale_off: z.number("Sale Off is required").min(0).max(100),
+  date_released: z.date("Date Released is required"),
+  product_description: z.string("Product Description is required").min(2).max(500),
+  category: z.string("Category is required").min(2).max(100),
+  img: z.instanceof(File).optional()
+})

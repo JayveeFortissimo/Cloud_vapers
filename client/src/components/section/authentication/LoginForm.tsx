@@ -3,7 +3,7 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { Button } from "@/components/ui/Button";
 import { Checkbox } from "@/components/ui/Checkbox";
-import SpinnerCircle from "@/components/ui/Spinner";
+import SpinnerCircle from "@/components/common/Spinner";
 import {
   Form,
   FormControl,
